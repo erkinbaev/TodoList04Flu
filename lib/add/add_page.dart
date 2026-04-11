@@ -57,6 +57,8 @@ class _AddPage extends State<AddPage> {
     );
   }
 
+  
+
   void _saveTodo() {
     Navigator.pop(context, _textEditingController.text);
   }
@@ -81,5 +83,6 @@ class _AddPage extends State<AddPage> {
     super.dispose();
     print("AddPage - dispose");
     _timer.cancel();
+    _textEditingController.dispose();
   }
 }
