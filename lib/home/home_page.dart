@@ -4,6 +4,10 @@ import 'package:todo_list_04flu/add/add_page.dart';
 import 'dart:math';
 
 import 'package:todo_list_04flu/database/app_database.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_04flu/database/app_repository.dart';
+import 'package:todo_list_04flu/home/home_state.dart';
+import 'package:todo_list_04flu/home/home_view_model.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -15,6 +19,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final HomeViewModel vm;
+
   int _counter = 0;
   bool isVisible = true;
   Color containerColor = Colors.blue;
@@ -32,6 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     print("HomePage - initState");
+    
+    final db = AppDatabase();
+    final repo = AppRepositoryImplementation(db: db);
+    vm = HomeViewModel(repo: repo);
+    vm.getList();
+
   }
 
   @override
@@ -44,16 +56,30 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("HomePage - build");
-    return Scaffold(
+    return BlocProvider.value(
+      value: vm,
+      child: Scaffold(
+        body: BlocBuilder<HomeViewModel, HomeState>(
+          builder: (context, state) {
+            if (state.isEmpty) {
+              return Center(child: 
+              Column(
+                children: 
+                [Padding(padding: .all(100)),
+                  Text("У вас нет задач"),
+                TextButton(onPressed: () => (), child: Text("Добавить"))
+                ]));
+            } else {
+              return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Center(
         child: ListView.builder(
-          itemCount: db.todoList.length,
+          itemCount: state.items.length,
           itemBuilder: (context, index) {
-            final todo = db.todoList[index];
+            final todo = state.items[index];
             return ListTile(title: Text(todo.title));
           }
         )
@@ -64,6 +90,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+            }
+          },
+        ) ,
+      ),
+      );
+    
   }
 
   // @override
