@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_04flu/database/app_repository.dart';
 import 'package:todo_list_04flu/home/home_state.dart';
 import 'package:todo_list_04flu/home/home_view_model.dart';
+import 'package:todo_list_04flu/settings/settings_page.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -74,6 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(onPressed: _navigateToSettingsPage, icon: Icon(Icons.settings))
+        ],
       ),
       body: Center(
         child: ListView.builder(
@@ -95,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ) ,
       ),
       );
-    
   }
 
   // @override
@@ -136,6 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
    if (result != null) {
     print("Текст со второго экрана: $result");
    }
+  }
+
+  void _navigateToSettingsPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => SettingsPage()));
   }
 
   void _updateUI() {
