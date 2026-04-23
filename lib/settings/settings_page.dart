@@ -20,6 +20,8 @@ class _SettingsPage extends State<SettingsPage> {
     // TODO: implement initState
     super.initState();
     _getPreferences();
+
+    _setPreferences();
   }
 
   @override

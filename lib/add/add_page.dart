@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:todo_list_04flu/database/app_database.dart';
+import 'package:todo_list_04flu/main.dart';
+
 class AddPage extends StatefulWidget{
   const AddPage({super.key});
 
@@ -60,7 +63,8 @@ class _AddPage extends State<AddPage> {
   
 
   void _saveTodo() {
-    Navigator.pop(context, _textEditingController.text);
+    appDatabase.insertTodo(TodosCompanion.insert(title: _textEditingController.text, date: DateTime.now().toString(), test: ""));
+    //Navigator.pop(context, _textEditingController.text);
   }
 
   @override

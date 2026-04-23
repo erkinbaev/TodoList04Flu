@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_04flu/database/app_repository.dart';
 import 'package:todo_list_04flu/home/home_state.dart';
 import 'package:todo_list_04flu/home/home_view_model.dart';
+import 'package:todo_list_04flu/main.dart';
 import 'package:todo_list_04flu/settings/settings_page.dart';
 
 
@@ -40,8 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     print("HomePage - initState");
     
-    final db = AppDatabase();
-    final repo = AppRepositoryImplementation(db: db);
+    final repo = AppRepositoryImplementation(db: appDatabase);
     vm = HomeViewModel(repo: repo);
     vm.getList();
 
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: 
                 [Padding(padding: .all(100)),
                   Text("У вас нет задач"),
-                TextButton(onPressed: () => (), child: Text("Добавить"))
+                TextButton(onPressed: _navigateToAddPage, child: Text("Добавить"))
                 ]));
             } else {
               return Scaffold(

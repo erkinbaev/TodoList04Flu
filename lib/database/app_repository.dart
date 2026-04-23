@@ -1,9 +1,9 @@
 
 import 'package:todo_list_04flu/database/app_database.dart';
-import 'package:todo_list_04flu/database/todo.dart';
+import 'package:todo_list_04flu/database/todos.dart';
 
 abstract class AppRepository {
-  List<Todo> getList();
+  Future <List<Todo>> getList();
 }
 
 class AppRepositoryImplementation extends AppRepository {
@@ -12,5 +12,5 @@ class AppRepositoryImplementation extends AppRepository {
   AppRepositoryImplementation({required this.db});
 
   @override
-  List<Todo> getList() => db.getList();
+  Future <List<Todo>> getList() => db.getTodoList();
 }
