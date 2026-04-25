@@ -13,18 +13,15 @@ class AddPage extends StatefulWidget{
 }
 
 class _AddPage extends State<AddPage> {
-  late Timer _timer;
   TextEditingController _textEditingController = TextEditingController();
+  String message = "";
+  bool isMessageVisible = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("AddPage - initState");
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      final date = DateTime.now();
-      print("${date.minute}: ${date.second}");
-    });
+    
   }
 
   @override
@@ -53,6 +50,7 @@ class _AddPage extends State<AddPage> {
                 label: Text("Введите название задачи")
                 )
               ),
+            Visibility(child: Text(message, style: TextStyle(color: Colors.red)), visible: isMessageVisible),
             TextButton(onPressed: () => _saveTodo(), child: Text("Сохранить"))
           ],
         ),
@@ -60,11 +58,46 @@ class _AddPage extends State<AddPage> {
     );
   }
 
-  
-
   void _saveTodo() {
-    appDatabase.insertTodo(TodosCompanion.insert(title: _textEditingController.text, date: DateTime.now().toString(), test: ""));
-    //Navigator.pop(context, _textEditingController.text);
+    
+    String title = _textEditingController.text;
+
+    try {
+      if (title.length < 3) {
+        throw TextFieldLengthException("min symbols = 3");
+      } else if (title.length > 50) {
+        throw TextFieldLengthException("max symbols = 50");
+      } else {
+        appDatabase.insertTodo(TodosCompanion.insert(title: _textEditingController.text, date: DateTime.now().toString(), test: ""));
+        Navigator.pop(context, _textEditingController.text);
+        setState(() {
+          isMessageVisible = !isMessageVisible;
+          message = "";
+        });
+      }
+    } catch (e, backtrace) {
+      // print("$backtrace");
+      
+      if (e.toString() == "min symbols = 3") {
+        setState(() {
+        if (!message.isEmpty) {
+          message = "Должно быть минимум 3 символа";
+        }else {
+          isMessageVisible = !isMessageVisible;
+          message = "Должно быть минимум 3 символа";
+        }
+      });
+      } else {
+        setState(() {
+        if (!message.isEmpty) {
+          message = "Должно быть максимум 50 символов";
+        } else {
+          isMessageVisible = !isMessageVisible;
+          message = "Должно быть максимум 50 символов";
+        }
+      });
+      }
+    }
   }
 
   @override
@@ -86,7 +119,16 @@ class _AddPage extends State<AddPage> {
     // TODO: implement dispose
     super.dispose();
     print("AddPage - dispose");
-    _timer.cancel();
     _textEditingController.dispose();
+  }
+}
+
+class TextFieldLengthException implements Exception {
+  final String message;
+
+  TextFieldLengthException(this.message);
+
+  String toString() {
+    return message;
   }
 }

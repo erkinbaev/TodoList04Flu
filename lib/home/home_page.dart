@@ -136,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _navigateToAddPage() async {
    final result = await Navigator.push(context, MaterialPageRoute(builder: (_) => const AddPage()));
+   vm.getList();
    if (result != null) {
     print("Текст со второго экрана: $result");
    }
