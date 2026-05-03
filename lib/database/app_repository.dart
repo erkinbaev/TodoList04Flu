@@ -4,6 +4,8 @@ import 'package:todo_list_04flu/database/todos.dart';
 
 abstract class AppRepository {
   Future <List<Todo>> getList();
+
+  Future<int> addTodo(TodosCompanion todo);
 }
 
 class AppRepositoryImplementation extends AppRepository {
@@ -13,4 +15,8 @@ class AppRepositoryImplementation extends AppRepository {
 
   @override
   Future <List<Todo>> getList() => db.getTodoList();
+
+  @override
+  Future<int> addTodo(TodosCompanion todo) => db.insertTodo(todo);
+  
 }

@@ -15,9 +15,11 @@ class HomeViewModel extends Cubit<HomeState>{
       //проверяем пустой ли список
       if (items.isEmpty) {
         //если пусто, нужно нарисовать пустой экран с кнопкой добавить
+        //ждите завершения функции getList()
         emit(state.copyWith(isEmpty: true));
       } else {
         //если список не пустой, то нарисовать список с задачами
+         //ждите завершения функции getList()
         emit(state.copyWith(items: items, isEmpty: false));
       }
     } catch (e) {
